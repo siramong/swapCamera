@@ -12,12 +12,7 @@ Una aplicación móvil interactiva desarrollada con React Native y Expo que perm
      4. El GIF se mostrará automáticamente aquí
 -->
 
-> **Nota:** Agrega aquí un GIF demostrativo mostrando el funcionamiento completo de la aplicación:
-> Captura de foto → Swipe para guardar/descartar → Visualización en galería
-
-<!-- Descomenta la siguiente línea cuando el GIF esté disponible:
 ![Demo de SwapCamera](./assets/demo.gif)
--->
 
 ---
 
