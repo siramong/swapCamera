@@ -10,7 +10,7 @@ export default function Index() {
 
   return (
     <View className="flex-1 bg-dracula-bg p-5 justify-center">
-      <View className="items-center mb-15">
+      <View className="items-center mb-16">
         <Text className="text-5xl font-bold text-dracula-purple mb-2">SwapCamera</Text>
         <Text className="text-2xl text-dracula-pink">Snap & Swipe</Text>
       </View>
