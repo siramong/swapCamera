@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { View } from "react-native";
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { CameraViewOrganism } from "../components/organisms/CameraViewOrganism";
 import { PhotoCard } from "../components/molecules/PhotoCard";

@@ -1,4 +1,4 @@
-import { FlatList, StyleSheet, View, Dimensions, Pressable } from 'react-native';
+import { FlatList, StyleSheet, Dimensions, Pressable } from 'react-native';
 import { Image } from 'expo-image';
 import { useRouter } from 'expo-router';
 import type { Photo } from '../../lib/store/galleryStore';
