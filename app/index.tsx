@@ -3,6 +3,7 @@ import { useRouter } from "expo-router";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { useGalleryStore } from "../lib/store/galleryStore";
+import "@/global.css"
 
 export default function Index() {
   const router = useRouter();
