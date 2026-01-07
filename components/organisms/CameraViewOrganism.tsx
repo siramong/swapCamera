@@ -3,11 +3,11 @@ import { CameraView } from 'expo-camera';
 import { useCameraLogic } from '../../lib/modules/camera/useCameraLogic';
 import { CameraControls } from '../molecules/CameraControls';
 
-interface CameraViewOrganimProps {
+interface CameraViewOrganismProps {
   onPhotoTaken: (uri: string) => void;
 }
 
-export function CameraViewOrganism({ onPhotoTaken }: CameraViewOrganimProps) {
+export function CameraViewOrganism({ onPhotoTaken }: CameraViewOrganismProps) {
   const {
     cameraRef,
     permission,
