@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, Pressable } from 'react-native';
+import { View, Text, Pressable } from 'react-native';
 import { useGalleryStore } from '../lib/store/galleryStore';
 import { PhotoGrid } from '../components/molecules/PhotoGrid';
 import { useRouter } from 'expo-router';
@@ -9,18 +9,18 @@ export default function Gallery() {
   const router = useRouter();
 
   return (
-    <View style={styles.container}>
-      <View style={styles.header}>
-        <Pressable onPress={() => router.back()} style={styles.backButton}>
+    <View className="flex-1 bg-dracula-bg">
+      <View className="flex-row items-center p-4 pt-12 bg-dracula-current">
+        <Pressable onPress={() => router.back()} className="p-2 mr-4">
           <AntDesign name="left" size={24} color="#f8f8f2" />
         </Pressable>
-        <Text style={styles.title}>Gallery ({photos.length})</Text>
+        <Text className="text-2xl font-bold text-dracula-fg">Gallery ({photos.length})</Text>
       </View>
       
       {photos.length === 0 ? (
-        <View style={styles.emptyContainer}>
-          <Text style={styles.emptyText}>No photos yet</Text>
-          <Text style={styles.emptySubtext}>Take some photos and swipe right to save them</Text>
+        <View className="flex-1 justify-center items-center p-5">
+          <Text className="text-xl text-dracula-fg mb-2">No photos yet</Text>
+          <Text className="text-sm text-dracula-comment text-center">Take some photos and swipe right to save them</Text>
         </View>
       ) : (
         <PhotoGrid photos={photos} />
@@ -28,42 +28,3 @@ export default function Gallery() {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#282a36',
-  },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    padding: 16,
-    paddingTop: 50,
-    backgroundColor: '#44475a',
-  },
-  backButton: {
-    padding: 8,
-    marginRight: 16,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: '#f8f8f2',
-  },
-  emptyContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 20,
-  },
-  emptyText: {
-    fontSize: 20,
-    color: '#f8f8f2',
-    marginBottom: 8,
-  },
-  emptySubtext: {
-    fontSize: 14,
-    color: '#6272a4',
-    textAlign: 'center',
-  },
-});

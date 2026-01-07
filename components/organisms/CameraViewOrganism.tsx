@@ -18,13 +18,13 @@ export function CameraViewOrganism({ onPhotoTaken }: CameraViewOrganismProps) {
   } = useCameraLogic();
 
   if (!permission) {
-    return <View style={styles.container} />;
+    return <View className="flex-1" />;
   }
 
   if (!permission.granted) {
     return (
-      <View style={styles.permissionContainer}>
-        <Text style={styles.permissionText}>
+      <View className="flex-1 justify-center items-center bg-dracula-bg">
+        <Text className="text-center text-dracula-fg mb-5 px-5">
           We need your permission to use the camera
         </Text>
         <Button onPress={requestPermission} title="Grant permission" />
@@ -40,7 +40,7 @@ export function CameraViewOrganism({ onPhotoTaken }: CameraViewOrganismProps) {
   };
 
   return (
-    <View style={styles.container}>
+    <View className="flex-1">
       <CameraView
         style={styles.camera}
         ref={cameraRef}
@@ -58,22 +58,7 @@ export function CameraViewOrganism({ onPhotoTaken }: CameraViewOrganismProps) {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
   camera: {
     flex: 1,
-  },
-  permissionContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#282a36',
-  },
-  permissionText: {
-    textAlign: 'center',
-    color: '#f8f8f2',
-    marginBottom: 20,
-    paddingHorizontal: 20,
   },
 });

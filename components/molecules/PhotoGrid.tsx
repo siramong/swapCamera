@@ -27,11 +27,12 @@ export function PhotoGrid({ photos }: PhotoGridProps) {
         <Pressable 
           style={styles.item}
           onPress={() => handlePhotoPress(item.uri)}
+          className="bg-dracula-current"
         >
           <Image
             source={{ uri: item.uri }}
             contentFit="cover"
-            style={styles.image}
+            className="w-full h-full"
           />
         </Pressable>
       )}
@@ -49,10 +50,5 @@ const styles = StyleSheet.create({
     margin: 2,
     borderRadius: 8,
     overflow: 'hidden',
-    backgroundColor: '#44475a',
-  },
-  image: {
-    width: '100%',
-    height: '100%',
   },
 });

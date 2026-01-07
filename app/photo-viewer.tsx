@@ -16,10 +16,10 @@ export default function PhotoViewer() {
   };
 
   return (
-    <View style={styles.container}>
+    <View className="flex-1 bg-black">
       <StatusBar hidden />
       
-      <Pressable style={styles.imageContainer} onPress={toggleControls}>
+      <Pressable className="flex-1 justify-center items-center" onPress={toggleControls}>
         <Image
           source={{ uri }}
           contentFit="contain"
@@ -28,8 +28,8 @@ export default function PhotoViewer() {
       </Pressable>
 
       {showControls && (
-        <View style={styles.header}>
-          <Pressable onPress={() => router.back()} style={styles.closeButton}>
+        <View className="absolute top-0 left-0 right-0 pt-12 px-4 pb-4 bg-black/50">
+          <Pressable onPress={() => router.back()} className="p-2 w-11 h-11 justify-center items-center">
             <AntDesign name="close" size={28} color="#f8f8f2" />
           </Pressable>
         </View>
@@ -39,34 +39,8 @@ export default function PhotoViewer() {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#000',
-  },
-  imageContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
   image: {
     width: SCREEN_WIDTH,
     height: SCREEN_HEIGHT,
-  },
-  header: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    paddingTop: 50,
-    paddingHorizontal: 16,
-    paddingBottom: 16,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-  },
-  closeButton: {
-    padding: 8,
-    width: 44,
-    height: 44,
-    justifyContent: 'center',
-    alignItems: 'center',
   },
 });

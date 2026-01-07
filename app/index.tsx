@@ -1,4 +1,4 @@
-import { Text, View, StyleSheet, Pressable } from "react-native";
+import { Text, View, Pressable } from "react-native";
 import { useRouter } from "expo-router";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
@@ -9,108 +9,38 @@ export default function Index() {
   const { photos } = useGalleryStore();
 
   return (
-    <View style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.title}>SwapCamera</Text>
-        <Text style={styles.subtitle}>Snap & Swipe</Text>
+    <View className="flex-1 bg-dracula-bg p-5 justify-center">
+      <View className="items-center mb-15">
+        <Text className="text-5xl font-bold text-dracula-purple mb-2">SwapCamera</Text>
+        <Text className="text-2xl text-dracula-pink">Snap & Swipe</Text>
       </View>
       
-      <View style={styles.buttonContainer}>
+      <View className="gap-5 mb-10">
         <Pressable
-          style={styles.primaryButton}
+          className="bg-dracula-purple p-5 rounded-xl flex-row items-center justify-center gap-3"
           onPress={() => router.push("/camera")}
         >
           <AntDesign name="camera" size={32} color="#f8f8f2" />
-          <Text style={styles.buttonText}>Open Camera</Text>
+          <Text className="text-dracula-fg text-lg font-semibold">Open Camera</Text>
         </Pressable>
 
         <Pressable
-          style={styles.secondaryButton}
+          className="bg-dracula-current p-5 rounded-xl flex-row items-center justify-center gap-3 border-2 border-dracula-purple"
           onPress={() => router.push("/gallery")}
         >
           <MaterialIcons name="photo-library" size={32} color="#f8f8f2" />
-          <Text style={styles.buttonText}>View Gallery ({photos.length})</Text>
+          <Text className="text-dracula-fg text-lg font-semibold">View Gallery ({photos.length})</Text>
         </Pressable>
       </View>
 
-      <View style={styles.instructions}>
-        <Text style={styles.instructionTitle}>How to use:</Text>
-        <Text style={styles.instructionText}>1. Open the camera</Text>
-        <Text style={styles.instructionText}>2. Take a photo</Text>
-        <Text style={styles.instructionText}>3. Swipe right to save ✓</Text>
-        <Text style={styles.instructionText}>4. Swipe left to discard ✗</Text>
-        <Text style={styles.instructionText}>5. View saved photos in gallery</Text>
+      <View className="bg-dracula-current p-5 rounded-xl border-l-4 border-dracula-green">
+        <Text className="text-dracula-green text-lg font-bold mb-3">How to use:</Text>
+        <Text className="text-dracula-fg text-sm my-1">1. Open the camera</Text>
+        <Text className="text-dracula-fg text-sm my-1">2. Take a photo</Text>
+        <Text className="text-dracula-fg text-sm my-1">3. Swipe right to save ✓</Text>
+        <Text className="text-dracula-fg text-sm my-1">4. Swipe left to discard ✗</Text>
+        <Text className="text-dracula-fg text-sm my-1">5. View saved photos in gallery</Text>
       </View>
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#282a36",
-    padding: 20,
-    justifyContent: "center",
-  },
-  header: {
-    alignItems: "center",
-    marginBottom: 60,
-  },
-  title: {
-    fontSize: 48,
-    fontWeight: "bold",
-    color: "#bd93f9",
-    marginBottom: 8,
-  },
-  subtitle: {
-    fontSize: 24,
-    color: "#ff79c6",
-  },
-  buttonContainer: {
-    gap: 20,
-    marginBottom: 40,
-  },
-  primaryButton: {
-    backgroundColor: "#bd93f9",
-    padding: 20,
-    borderRadius: 12,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    gap: 12,
-  },
-  secondaryButton: {
-    backgroundColor: "#44475a",
-    padding: 20,
-    borderRadius: 12,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    gap: 12,
-    borderWidth: 2,
-    borderColor: "#bd93f9",
-  },
-  buttonText: {
-    color: "#f8f8f2",
-    fontSize: 18,
-    fontWeight: "600",
-  },
-  instructions: {
-    backgroundColor: "#44475a",
-    padding: 20,
-    borderRadius: 12,
-    borderLeftWidth: 4,
-    borderLeftColor: "#50fa7b",
-  },
-  instructionTitle: {
-    color: "#50fa7b",
-    fontSize: 18,
-    fontWeight: "bold",
-    marginBottom: 12,
-  },
-  instructionText: {
-    color: "#f8f8f2",
-    fontSize: 14,
-    marginVertical: 4,
-  },
-});

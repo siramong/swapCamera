@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { StyleSheet } from "react-native";
+import { View } from "react-native";
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { CameraViewOrganism } from "../components/organisms/CameraViewOrganism";
 import { PhotoCard } from "../components/molecules/PhotoCard";
@@ -25,7 +25,7 @@ export default function Camera() {
   };
 
   return (
-    <GestureHandlerRootView style={styles.container}>
+    <GestureHandlerRootView className="flex-1 bg-dracula-bg">
       {capturedUri ? (
         <PhotoCard
           uri={capturedUri}
@@ -38,10 +38,3 @@ export default function Camera() {
     </GestureHandlerRootView>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#282a36",
-  },
-});
