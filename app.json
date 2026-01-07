@@ -38,7 +38,12 @@
             "backgroundColor": "#000000"
           }
         }
-      ]
+      ],
+      "expo-camera",
+      {
+        "cameraPermission": "Permite acceso a tu cámara.",
+        "microphonePermission": "Permite acceso a tu microfóno."
+      }
     ],
     "experiments": {
       "typedRoutes": true,

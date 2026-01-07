@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Snap & Swipe Project Guide - Dracula Theme</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Plotly.js -->
+    <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+    
+    <!-- Palette & Custom Styles -->
+    <style>
+        /* Palette: Dracula Theme Official */
+        :root {
+            --dracula-bg: #282a36;
+            --dracula-current: #44475a;
+            --dracula-fg: #f8f8f2;
+            --dracula-comment: #6272a4;
+            --dracula-cyan: #8be9fd;
+            --dracula-green: #50fa7b;
+            --dracula-orange: #ffb86c;
+            --dracula-pink: #ff79c6;
+            --dracula-purple: #bd93f9;
+            --dracula-red: #ff5555;
+            --dracula-yellow: #f1fa8c;
+        }
+        
+        body {
+            background-color: var(--dracula-bg);
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            color: var(--dracula-fg);
+        }
+
+        .gradient-text {
+            background: linear-gradient(to right, var(--dracula-purple), var(--dracula-pink));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 400px;
+        }
+
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+
+        /* Timeline Styles */
+        .timeline-line {
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: var(--dracula-comment);
+            transform: translateX(-50%);
+            z-index: 0;
+        }
+        
+        .timeline-dot {
+            width: 24px;
+            height: 24px;
+            background: var(--dracula-purple);
+            border-radius: 50%;
+            border: 4px solid var(--dracula-fg);
+            box-shadow: 0 0 10px rgba(189, 147, 249, 0.5); /* Glow effect */
+            z-index: 10;
+        }
+
+        /* Material Card - Dracula Style */
+        .card {
+            background: var(--dracula-current);
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: transform 0.2s;
+        }
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.4);
+            border-color: var(--dracula-comment);
+        }
+
+        /* Custom Scrollbar for code blocks */
+        ::-webkit-scrollbar {
+            height: 8px;
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--dracula-bg); 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--dracula-comment); 
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+
+    <!-- Header Section -->
+    <header class="text-center mb-12">
+        <h1 class="text-4xl md:text-6xl font-extrabold mb-4 gradient-text tracking-tight">SwapCamera - RepoMovil</h1>
+        <p class="text-xl text-gray-300 max-w-2xl mx-auto">
+            Guía visual para construir una experiencia móvil gestual con <strong style="color: var(--dracula-cyan)">React Native</strong>, <strong style="color: var(--dracula-purple)">Expo Camera</strong> y <strong style="color: var(--dracula-pink)">Reanimated</strong>.
+        </p>
+    </header>
+
+    <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+        
+        <!-- Section 1: Project Overview & Tech Stack -->
+        <section class="col-span-1 md:col-span-2 card p-6 md:p-8 border-l-8" style="border-color: var(--dracula-purple)">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
+                <h2 class="text-2xl font-bold text-white">El Desafío Técnico & Documentación</h2>
+                <div class="mt-4 md:mt-0 flex flex-wrap gap-2">
+                    <a href="https://docs.expo.dev/versions/latest/sdk/camera/" target="_blank" class="px-3 py-1 bg-[#282a36] text-[#bd93f9] border border-[#bd93f9] rounded-full text-xs font-semibold hover:bg-[#bd93f9] hover:text-[#282a36] transition">📄 Expo Camera</a>
+                    <a href="https://docs.swmansion.com/react-native-gesture-handler/" target="_blank" class="px-3 py-1 bg-[#282a36] text-[#8be9fd] border border-[#8be9fd] rounded-full text-xs font-semibold hover:bg-[#8be9fd] hover:text-[#282a36] transition">📄 Gesture Handler</a>
+                    <a href="https://docs.swmansion.com/react-native-reanimated/" target="_blank" class="px-3 py-1 bg-[#282a36] text-[#ff79c6] border border-[#ff79c6] rounded-full text-xs font-semibold hover:bg-[#ff79c6] hover:text-[#282a36] transition">📄 Reanimated</a>
+                    <a href="https://docs.expo.dev/router/introduction/" target="_blank" class="px-3 py-1 bg-[#282a36] text-[#f1fa8c] border border-[#f1fa8c] rounded-full text-xs font-semibold hover:bg-[#f1fa8c] hover:text-[#282a36] transition">📄 Expo Router</a>
+                </div>
+            </div>
+            
+            <p class="text-gray-300 mb-6">
+                Para lograr la mecánica de "Swipe", es crucial entender las herramientas disponibles en la librería <code style="color: var(--dracula-orange)">react-native-gesture-handler</code>. 
+                A continuación se detallan los gestos primitivos:
+            </p>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                <!-- Pan Gesture (The Core) -->
+                <div class="bg-[#282a36] p-4 rounded-lg border border-[#bd93f9]">
+                    <div class="flex items-center mb-2">
+                        <span class="text-xl mr-2">👆</span>
+                        <h3 class="font-bold text-[#bd93f9]">Pan (Arrastre)</h3>
+                    </div>
+                    <p class="text-sm text-gray-400 leading-relaxed">
+                        Rastrea el movimiento continuo del dedo en la pantalla (ejes X e Y). <br>
+                        <strong>Uso en proyecto:</strong> Gesto principal para el Swipe.
+                    </p>
+                </div>
+
+                <!-- Tap Gesture -->
+                <div class="bg-[#282a36] p-4 rounded-lg border border-[#6272a4]">
+                    <div class="flex items-center mb-2">
+                        <span class="text-xl mr-2">🤏</span>
+                        <h3 class="font-bold text-gray-200">Tap (Toque)</h3>
+                    </div>
+                    <p class="text-sm text-gray-400 leading-relaxed">
+                        Detecta toques simples, dobles o triples. <br>
+                        <strong>Uso:</strong> Botones y selección de ítems.
+                    </p>
+                </div>
+
+                <!-- Long Press -->
+                <div class="bg-[#282a36] p-4 rounded-lg border border-[#6272a4]">
+                    <div class="flex items-center mb-2">
+                        <span class="text-xl mr-2">⏱️</span>
+                        <h3 class="font-bold text-gray-200">Long Press</h3>
+                    </div>
+                    <p class="text-sm text-gray-400 leading-relaxed">
+                        Se activa al mantener presionado (ej. 500ms). <br>
+                        <strong>Uso:</strong> Opciones de edición/borrado.
+                    </p>
+                </div>
+
+                <!-- Fling -->
+                <div class="bg-[#282a36] p-4 rounded-lg border border-[#6272a4]">
+                    <div class="flex items-center mb-2">
+                        <span class="text-xl mr-2">💨</span>
+                        <h3 class="font-bold text-gray-200">Fling (Lanzar)</h3>
+                    </div>
+                    <p class="text-sm text-gray-400 leading-relaxed">
+                        Movimiento rápido sin rastreo continuo. <br>
+                        <strong>Uso:</strong> Paginación veloz.
+                    </p>
+                </div>
+
+                <!-- Pinch -->
+                <div class="bg-[#282a36] p-4 rounded-lg border border-[#6272a4]">
+                    <div class="flex items-center mb-2">
+                        <span class="text-xl mr-2">👐</span>
+                        <h3 class="font-bold text-gray-200">Pinch (Pellizcar)</h3>
+                    </div>
+                    <p class="text-sm text-gray-400 leading-relaxed">
+                        Rastrea distancia entre dos dedos. <br>
+                        <strong>Uso:</strong> Zoom In/Out.
+                    </p>
+                </div>
+
+                <!-- Rotation -->
+                <div class="bg-[#282a36] p-4 rounded-lg border border-[#6272a4]">
+                    <div class="flex items-center mb-2">
+                        <span class="text-xl mr-2">🔄</span>
+                        <h3 class="font-bold text-gray-200">Rotation</h3>
+                    </div>
+                    <p class="text-sm text-gray-400 leading-relaxed">
+                        Movimiento circular de dos dedos. <br>
+                        <strong>Uso:</strong> Rotar stickers o imágenes.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Setup Critical: Expo Camera -->
+        <section class="col-span-1 md:col-span-2 card p-6 border-l-8" style="border-color: var(--dracula-pink)">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-4">
+                <div class="flex items-center">
+                    <span class="text-3xl mr-3">📸</span>
+                    <div>
+                        <h2 class="text-2xl font-bold text-white">Setup Crítico: Expo Camera</h2>
+                        <p class="text-xs font-bold uppercase tracking-wide" style="color: var(--dracula-pink)">Configuración Obligatoria</p>
+                    </div>
+                </div>
+                <a href="https://docs.expo.dev/versions/latest/sdk/camera/" target="_blank" class="mt-2 md:mt-0 text-xs bg-[#282a36] text-[#ff79c6] border border-[#ff79c6] px-3 py-1 rounded-full hover:bg-[#ff79c6] hover:text-[#282a36] transition">Ver Documentación Oficial ↗</a>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- Column 1: app.json -->
+                <div class="bg-[#282a36] p-4 rounded-lg border border-[#6272a4]">
+                    <h3 class="font-bold text-gray-200 mb-2 flex items-center">
+                        <span class="bg-[#44475a] text-[#8be9fd] w-6 h-6 rounded-full flex items-center justify-center text-xs mr-2 border border-[#8be9fd]">1</span>
+                        Permisos del Dispositivo (app.json)
+                    </h3>
+                    <p class="text-sm text-gray-400 mb-3">
+                        Declarar el plugin en <code>app.json</code> es obligatorio para builds de producción.
+                    </p>
+                    <div class="bg-[#191a21] text-[#f8f8f2] p-3 rounded text-xs font-mono overflow-x-auto shadow-inner border border-[#6272a4]">
+<pre class="whitespace-pre">
+"expo": {
+  "plugins": [
+    [
+      "expo-camera",
+      {
+        "cameraPermission": "Permite acceso para fotos.",
+        "microphonePermission": "Permite acceso para video."
+      }
+    ]
+  ]
+}
+</pre>
+                    </div>
+                    <p class="text-xs mt-2 font-semibold" style="color: var(--dracula-red)">⚠️ Sin esto, la app se cerrará al abrir la cámara.</p>
+                </div>
+
+                <!-- Column 2: Hooks Logic -->
+                <div class="bg-[#282a36] p-4 rounded-lg border border-[#6272a4]">
+                    <h3 class="font-bold text-gray-200 mb-2 flex items-center">
+                        <span class="bg-[#44475a] text-[#bd93f9] w-6 h-6 rounded-full flex items-center justify-center text-xs mr-2 border border-[#bd93f9]">2</span>
+                        Ciclo de Vida (Hooks)
+                    </h3>
+                    <p class="text-sm text-gray-400 mb-3">
+                        Gestiona permisos antes de renderizar <code>&lt;CameraView&gt;</code>.
+                    </p>
+                    <ul class="space-y-2 text-sm text-gray-300">
+                        <li class="flex items-start">
+                            <span style="color: var(--dracula-green)" class="mr-2">✓</span>
+                            <span><strong>Importar:</strong> <code>useCameraPermissions</code> de 'expo-camera'.</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span style="color: var(--dracula-green)" class="mr-2">✓</span>
+                            <span><strong>Estado:</strong> <code>const [status, request] = useCameraPermissions();</code></span>
+                        </li>
+                        <li class="flex items-start">
+                            <span style="color: var(--dracula-green)" class="mr-2">✓</span>
+                            <span><strong>Validación:</strong> Si <code>!status.granted</code>, muestra botón de solicitud.</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 2: Architecture -->
+        <section class="card p-6">
+            <h2 class="text-2xl font-bold text-white mb-4">Arquitectura Atómica</h2>
+            <p class="text-gray-400 text-sm mb-6">
+                Separamos la lógica (Hooks en <code>/lib</code>) de la UI. 
+                La UI sigue <strong>Atomic Design</strong>, construyendo complejidad paso a paso.
+            </p>
+            
+            <div class="chart-container">
+                <canvas id="atomicChart"></canvas>
+            </div>
+            <p class="text-xs text-gray-500 text-center mt-2">Jerarquía de Componentes en <code>/components</code></p>
+        </section>
+
+        <!-- Section 3: Swipe Physics -->
+        <section class="card p-6">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-2xl font-bold text-white">Física del Gesto (Swipe)</h2>
+                <div class="flex gap-2">
+                     <a href="#" class="text-xs bg-[#282a36] text-[#8be9fd] px-2 py-1 rounded border border-[#8be9fd]">Docs Pan</a>
+                     <a href="#" class="text-xs bg-[#282a36] text-[#ff79c6] px-2 py-1 rounded border border-[#ff79c6]">Docs Reanimated</a>
+                </div>
+            </div>
+            <p class="text-gray-400 text-sm mb-6">
+                El <strong style="color: var(--dracula-cyan)">Pan Gesture</strong> alimenta a <strong style="color: var(--dracula-pink)">Reanimated</strong>.
+                <br><br>
+                Matemáticas a 60fps para decidir:
+                <br>
+                • <strong style="color: var(--dracula-yellow)"> < 100px:</strong> Spring back (Regresa).<br>
+                • <strong style="color: var(--dracula-green)"> > 100px:</strong> Acción (Guardar/Descartar).
+            </p>
+            
+            <div class="chart-container">
+                <canvas id="physicsChart"></canvas>
+            </div>
+            <p class="text-xs text-gray-500 text-center mt-2">Relación Traslación (X) vs. Rotación (Deg)</p>
+        </section>
+
+        <!-- Section 4: Development Phases -->
+        <section class="col-span-1 md:col-span-2 card p-8">
+            <h2 class="text-2xl font-bold text-white mb-8 text-center">Hoja de Ruta de Desarrollo</h2>
+            <div class="relative">
+                <!-- Vertical Line -->
+                <div class="timeline-line hidden md:block"></div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 relative">
+                    
+                    <!-- Phase 1 -->
+                    <div class="md:text-right relative">
+                        <div class="absolute right-[-22px] top-6 hidden md:block timeline-dot" style="background: var(--dracula-purple); border-color: var(--dracula-bg)"></div>
+                        <div class="bg-[#282a36] p-4 rounded-lg border-l-4 md:border-l-0 md:border-r-4 border-[#bd93f9]">
+                            <h3 class="font-bold text-[#bd93f9]">Fase 1: Configuración</h3>
+                            <p class="text-sm text-gray-400">
+                                Expo Router setup. Creación de rutas base. <br>
+                                <strong class="text-[#bd93f9]">Importante:</strong> Reemplazar <code>icon.png</code> y <code>splash.png</code> (Assets).
+                            </p>
+                        </div>
+                    </div>
+                    <div class="hidden md:block"></div>
+
+                    <!-- Phase 2 -->
+                    <div class="hidden md:block"></div>
+                    <div class="relative">
+                        <div class="absolute left-[-22px] top-6 hidden md:block timeline-dot" style="background: var(--dracula-pink); border-color: var(--dracula-bg)"></div>
+                        <div class="bg-[#282a36] p-4 rounded-lg border-l-4 border-[#ff79c6]">
+                            <h3 class="font-bold text-[#ff79c6]">Fase 2: Cámara y Hooks</h3>
+                            <p class="text-sm text-gray-400">Lógica en <code>lib/modules/camera/</code>. Permisos y vista previa.</p>
+                        </div>
+                    </div>
+
+                    <!-- Phase 3 -->
+                    <div class="md:text-right relative">
+                        <div class="absolute right-[-22px] top-6 hidden md:block timeline-dot" style="background: var(--dracula-cyan); border-color: var(--dracula-bg)"></div>
+                        <div class="bg-[#282a36] p-4 rounded-lg border-l-4 md:border-l-0 md:border-r-4 border-[#8be9fd]">
+                            <h3 class="font-bold text-[#8be9fd]">Fase 3: Gestos (The Core)</h3>
+                            <p class="text-sm text-gray-400">
+                                Implementar <code>PanGesture</code> en <code>lib/ui/</code> (Hook Personalizado). Interpolación visual.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="hidden md:block"></div>
+
+                    <!-- Phase 4 -->
+                    <div class="hidden md:block"></div>
+                    <div class="relative">
+                        <div class="absolute left-[-22px] top-6 hidden md:block timeline-dot" style="background: var(--dracula-yellow); border-color: var(--dracula-bg)"></div>
+                        <div class="bg-[#282a36] p-4 rounded-lg border-l-4 border-[#f1fa8c]">
+                            <h3 class="font-bold text-[#f1fa8c]">Fase 4: Integración</h3>
+                            <p class="text-sm text-gray-400">Conectar flujos. Swipe Right guarda en Store. Grid en Galería.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Project Structure Visualization -->
+        <section class="col-span-1 md:col-span-2 card p-6 border-l-8 my-4" style="background-color: #191a21; border-color: var(--dracula-purple)">
+            <h2 class="text-2xl font-bold text-white mb-2">Estructura del Proyecto (Filesystem)</h2>
+            <p class="text-gray-400 text-sm mb-6">
+                Para evitar el "Spaghetti Code", tu entrega debe reflejar este árbol.
+            </p>
+
+            <div class="font-mono text-sm grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Column 1 -->
+                <div>
+                    <div class="flex items-center text-[#bd93f9] mb-2 font-bold text-lg">📂 /snap-swipe-app</div>
+                    
+                    <div class="ml-4 pl-4 border-l border-[#6272a4]">
+                        <div class="flex items-center text-[#f1fa8c] mb-1">
+                            <span class="mr-2">📁</span> <strong>/app</strong>
+                        </div>
+                        <div class="ml-6 border-l border-[#6272a4] pl-3 text-gray-500 space-y-1">
+                            <div>📄 _layout.tsx</div>
+                            <div>📄 index.tsx</div>
+                            <div>📄 camera.tsx</div>
+                            <div>📄 gallery.tsx</div>
+                        </div>
+                    </div>
+
+                    <div class="ml-4 pl-4 border-l border-[#6272a4] mt-4">
+                        <div class="flex items-center text-[#8be9fd] mb-1">
+                            <span class="mr-2">📁</span> <strong>/components</strong>
+                        </div>
+                        <div class="ml-6 border-l border-[#6272a4] pl-3 text-gray-500 space-y-1">
+                            <div class="text-[#8be9fd] opacity-80">📁 /atoms <span class="text-gray-600 ml-2">-> Buttons</span></div>
+                            <div class="text-[#8be9fd] opacity-80">📁 /molecules <span class="text-gray-600 ml-2">-> Cards</span></div>
+                            <div class="text-[#8be9fd] opacity-80">📁 /organisms <span class="text-gray-600 ml-2">-> Views</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Column 2 -->
+                <div>
+                    <div class="ml-4 pl-4 md:border-l border-[#6272a4] h-full">
+                        <div class="mb-4">
+                            <div class="flex items-center text-[#50fa7b] mb-1">
+                                <span class="mr-2">📁</span> <strong>/lib</strong>
+                            </div>
+                            <div class="ml-6 border-l border-[#6272a4] pl-3 text-gray-500 space-y-3">
+                                <!-- Modules Section -->
+                                <div>
+                                    <div class="text-[#50fa7b] opacity-80">📁 /modules</div>
+                                    <div class="pl-4 border-l border-[#6272a4] ml-2 mt-1">
+                                        <div class="text-[#50fa7b] opacity-60">📁 /camera</div>
+                                        <div class="pl-4 text-gray-600 text-xs italic">↳ useCameraLogic.ts</div>
+                                    </div>
+                                </div>
+                                
+                                <!-- UI Logic Section -->
+                                <div>
+                                    <div class="text-[#50fa7b] opacity-80">📁 /ui</div>
+                                    <div class="pl-4 text-gray-600 text-xs italic">↳ useSwipeLogic.ts</div>
+                                </div>
+
+                                <!-- Store Section -->
+                                <div>
+                                    <div class="text-[#50fa7b] opacity-80">📁 /store</div>
+                                    <div class="pl-4 text-gray-600 text-xs italic">↳ galleryStore.ts</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-6">
+                            <div class="flex items-center text-[#ff79c6] mb-1">
+                                <span class="mr-2">⚙️</span> <strong>Config</strong>
+                            </div>
+                            <div class="ml-6 border-l border-[#6272a4] pl-3 text-gray-500">
+                                <div>📄 app.json <span class="text-[#ff5555] ml-2"><- Plugins</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Submission Instructions -->
+        <section class="col-span-1 md:col-span-2 card p-8 border-l-8" style="border-color: var(--dracula-green)">
+            <div class="mb-8 border-b border-[#6272a4] pb-4">
+                <h2 class="text-3xl font-extrabold text-white tracking-tight">Instrucciones de Entrega</h2>
+                <p class="text-sm text-[#50fa7b] font-semibold mt-1 uppercase tracking-widest">Sigue estos pasos obligatorios</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Step 1 -->
+                <div class="bg-[#282a36] p-6 rounded-xl border-2 border-[#50fa7b] shadow-[0_0_15px_rgba(80,250,123,0.1)] hover:shadow-[0_0_25px_rgba(80,250,123,0.3)] transition-all duration-300 relative group">
+                    <div class="text-[#50fa7b] font-black text-6xl absolute -top-5 -right-2 opacity-10 group-hover:opacity-20 transition-opacity select-none font-sans">01</div>
+                    <h3 class="text-xl font-bold text-white mb-3 relative z-10">Repo Público</h3>
+                    <p class="text-gray-300 text-sm leading-relaxed relative z-10">
+                        Haz push a <code class="text-[#50fa7b] bg-[#44475a] px-1 rounded">main</code> y asegura que el repositorio en GitHub esté configurado explícitamente como <strong>Público</strong> para su revisión.
+                    </p>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="bg-[#282a36] p-6 rounded-xl border-2 border-[#50fa7b] shadow-[0_0_15px_rgba(80,250,123,0.1)] hover:shadow-[0_0_25px_rgba(80,250,123,0.3)] transition-all duration-300 relative group">
+                    <div class="text-[#50fa7b] font-black text-6xl absolute -top-5 -right-2 opacity-10 group-hover:opacity-20 transition-opacity select-none font-sans">02</div>
+                    <h3 class="text-xl font-bold text-white mb-3 relative z-10">Enlace en PDF</h3>
+                    <p class="text-gray-300 text-sm leading-relaxed relative z-10">
+                        Copia la URL del repositorio, pégala en un documento formal y expórtalo como <strong>PDF</strong>. Sube este único archivo al Aula Virtual.
+                    </p>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="bg-[#282a36] p-6 rounded-xl border-2 border-[#50fa7b] shadow-[0_0_15px_rgba(80,250,123,0.1)] hover:shadow-[0_0_25px_rgba(80,250,123,0.3)] transition-all duration-300 relative group">
+                    <div class="text-[#50fa7b] font-black text-6xl absolute -top-5 -right-2 opacity-10 group-hover:opacity-20 transition-opacity select-none font-sans">03</div>
+                    <h3 class="text-xl font-bold text-white mb-3 relative z-10">Demo .GIF</h3>
+                    <p class="text-gray-300 text-sm leading-relaxed relative z-10">
+                        <strong>Requisito Crítico:</strong> Adjunta un archivo <code class="text-[#50fa7b] bg-[#44475a] px-1 rounded">.gif</code> que demuestre el flujo completo: Captura de Foto ➔ Swipe ➔ Galería.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 5: Grading -->
+        <section class="card p-6">
+            <h2 class="text-2xl font-bold text-white mb-2">Criterios de Evaluación</h2>
+            <p class="text-gray-400 text-sm mb-6">
+                Total: <strong>10 Puntos</strong>.
+            </p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
+                <div class="chart-container h-64 md:h-auto">
+                    <canvas id="gradingChart"></canvas>
+                </div>
+
+                <div class="space-y-4">
+                    <div class="flex items-start">
+                        <span class="bg-[#282a36] text-[#bd93f9] border border-[#bd93f9] font-bold text-xs px-2 py-1 rounded w-10 text-center mt-0.5 mr-3">DA</span>
+                        <div>
+                            <p class="text-sm font-bold text-gray-200">Destreza Alcanzada</p>
+                            <p class="text-xs text-gray-500">Funcionalidad perfecta.</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start">
+                        <span class="bg-[#282a36] text-[#50fa7b] border border-[#50fa7b] font-bold text-xs px-2 py-1 rounded w-10 text-center mt-0.5 mr-3">AA</span>
+                        <div>
+                            <p class="text-sm font-bold text-gray-200">Aprendizaje Alcanzado</p>
+                            <p class="text-xs text-gray-500">Detalles menores.</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start">
+                        <span class="bg-[#282a36] text-[#f1fa8c] border border-[#f1fa8c] font-bold text-xs px-2 py-1 rounded w-10 text-center mt-0.5 mr-3">PA</span>
+                        <div>
+                            <p class="text-sm font-bold text-gray-200">Próximo a Alcanzar</p>
+                            <p class="text-xs text-gray-500">Bugs visibles o lógica en UI.</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start">
+                        <span class="bg-[#282a36] text-[#6272a4] border border-[#6272a4] font-bold text-xs px-2 py-1 rounded w-10 text-center mt-0.5 mr-3">NA</span>
+                        <div>
+                            <p class="text-sm font-bold text-gray-200">No Evaluado</p>
+                            <p class="text-xs text-gray-500">No funciona.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Penalties -->
+        <section class="card p-6 border-t-8 border-[#ff5555]">
+            <h2 class="text-2xl font-bold text-[#ff5555] mb-4">Zona de Peligro (Penalizaciones)</h2>
+            <p class="text-gray-400 text-sm mb-6">
+                Errores que restan puntos directamente. <strong>Un repositorio sucio puede costar la aprobación.</strong>
+            </p>
+            <div class="chart-container h-[550px]">
+                <canvas id="penaltyChart"></canvas>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        // Dracula Palette JS
+        const dracula = {
+            bg: '#282a36',
+            current: '#44475a',
+            fg: '#f8f8f2',
+            comment: '#6272a4',
+            cyan: '#8be9fd',
+            green: '#50fa7b',
+            orange: '#ffb86c',
+            pink: '#ff79c6',
+            purple: '#bd93f9',
+            red: '#ff5555',
+            yellow: '#f1fa8c'
+        };
+
+        // Common defaults for Charts
+        Chart.defaults.color = dracula.fg;
+        Chart.defaults.borderColor = dracula.comment;
+        Chart.defaults.scale.grid.color = '#6272a440'; // Transparent comment color
+
+        function processLabels(labels) {
+            return labels.map(label => {
+                if (label.length > 16) {
+                    const words = label.split(' ');
+                    const lines = [];
+                    let currentLine = words[0];
+                    for (let i = 1; i < words.length; i++) {
+                        if ((currentLine + " " + words[i]).length <= 16) {
+                            currentLine += " " + words[i];
+                        } else {
+                            lines.push(currentLine);
+                            currentLine = words[i];
+                        }
+                    }
+                    lines.push(currentLine);
+                    return lines;
+                }
+                return label;
+            });
+        }
+
+        const commonTooltipOptions = {
+            callbacks: {
+                title: function(tooltipItems) {
+                    const item = tooltipItems[0];
+                    let label = item.chart.data.labels[item.dataIndex];
+                    if (Array.isArray(label)) {
+                        return label.join(' ');
+                    } else {
+                        return label;
+                    }
+                }
+            },
+            backgroundColor: dracula.bg,
+            titleColor: dracula.purple,
+            bodyColor: dracula.fg,
+            borderColor: dracula.comment,
+            borderWidth: 1
+        };
+
+        // --- CHART 2: Atomic Design ---
+        const ctxAtomic = document.getElementById('atomicChart').getContext('2d');
+        const rawAtomicLabels = ['Organisms', 'Molecules', 'Atoms', 'Lib Hooks'];
+        
+        new Chart(ctxAtomic, {
+            type: 'polarArea',
+            data: {
+                labels: processLabels(rawAtomicLabels),
+                datasets: [{
+                    label: 'Complejidad',
+                    data: [80, 50, 20, 90],
+                    backgroundColor: [
+                        dracula.purple + 'BB', // Add alpha
+                        dracula.cyan + 'BB',
+                        dracula.pink + 'BB',
+                        dracula.orange + 'BB'
+                    ],
+                    borderWidth: 1,
+                    borderColor: dracula.bg
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    r: {
+                        ticks: { display: false, backdropColor: 'transparent' },
+                        grid: { color: dracula.comment }
+                    }
+                },
+                plugins: {
+                    legend: { position: 'right', labels: { color: dracula.fg } },
+                    tooltip: commonTooltipOptions
+                }
+            }
+        });
+
+        // --- CHART 3: Physics ---
+        const ctxPhysics = document.getElementById('physicsChart').getContext('2d');
+        const physicsData = [];
+        for (let x = -200; x <= 200; x += 20) {
+            physicsData.push({x: x, y: x * 0.1});
+        }
+
+        new Chart(ctxPhysics, {
+            type: 'scatter',
+            data: {
+                datasets: [{
+                    label: 'Rotación',
+                    data: physicsData,
+                    backgroundColor: dracula.purple,
+                    pointRadius: 6
+                },
+                {
+                    label: 'Descarte',
+                    data: [{x: -150, y: -15}],
+                    pointRadius: 15,
+                    backgroundColor: dracula.red + '80'
+                },
+                {
+                    label: 'Guardar',
+                    data: [{x: 150, y: 15}],
+                    pointRadius: 15,
+                    backgroundColor: dracula.green + '80'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    x: {
+                        title: { display: true, text: 'Traslación X (px)', color: dracula.comment },
+                        grid: { color: '#6272a440' }
+                    },
+                    y: {
+                        title: { display: true, text: 'Rotación (deg)', color: dracula.comment },
+                        grid: { color: '#6272a440' }
+                    }
+                },
+                plugins: {
+                    legend: { labels: { color: dracula.fg } },
+                    tooltip: commonTooltipOptions
+                }
+            }
+        });
+
+        // --- CHART 4: Grading ---
+        const ctxGrading = document.getElementById('gradingChart').getContext('2d');
+        const rubricLabels = ['Arquitectura (2.5)', 'Cámara (2.5)', 'Gestos (3.0)', 'Integración (2.0)'];
+
+        new Chart(ctxGrading, {
+            type: 'doughnut',
+            data: {
+                labels: processLabels(rubricLabels),
+                datasets: [{
+                    data: [2.5, 2.5, 3.0, 2.0],
+                    backgroundColor: [
+                        dracula.purple,
+                        dracula.pink,
+                        dracula.cyan,
+                        dracula.orange
+                    ],
+                    borderColor: dracula.current,
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                cutout: '60%',
+                plugins: {
+                    legend: { position: 'left', labels: { boxWidth: 12, font: { size: 10 }, color: dracula.fg } },
+                    tooltip: commonTooltipOptions
+                }
+            }
+        });
+
+        // --- CHART 5: Penalties ---
+        const ctxPenalty = document.getElementById('penaltyChart').getContext('2d');
+        const penaltyLabels = [
+            'App Crashea (Fatal)', 
+            'Estructura Incorrecta', 
+            'Subir node_modules', 
+            'Un solo commit', 
+            'Comp. "God Object"', 
+            'Lógica en UI', 
+            'Assets Genéricos',
+            'Tipado "any"',
+            'Estilos Inline',
+            'Console.logs' 
+        ];
+
+        new Chart(ctxPenalty, {
+            type: 'bar',
+            data: {
+                labels: processLabels(penaltyLabels),
+                datasets: [{
+                    label: 'Puntos Penalizados',
+                    data: [-5.0, -3.0, -2.0, -2.0, -1.5, -1.5, -1.0, -1.0, -1.0, -0.5],
+                    backgroundColor: [
+                        '#ff5555', // Red
+                        '#ff5555', 
+                        '#ff5555CC', 
+                        '#ff5555CC', 
+                        '#ffb86c', // Orange
+                        '#ffb86c', 
+                        '#f1fa8c', // Yellow warning
+                        '#f1fa8c',
+                        '#f1fa8c',
+                        '#f1fa8c80' 
+                    ],
+                    borderRadius: 4
+                }]
+            },
+            options: {
+                indexAxis: 'y',
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    x: {
+                        beginAtZero: true,
+                        max: 0,
+                        min: -6, 
+                        grid: { color: '#6272a440' },
+                        title: { display: true, text: 'Puntos Restados', color: dracula.comment },
+                        ticks: { color: dracula.fg }
+                    },
+                    y: {
+                        grid: { display: false },
+                        ticks: { color: dracula.fg }
+                    }
+                },
+                plugins: {
+                    legend: { display: false },
+                    tooltip: commonTooltipOptions
+                }
+            }
+        });
+
+    </script>
+</body>
+</html>
