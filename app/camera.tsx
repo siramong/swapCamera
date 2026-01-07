@@ -1,15 +1,13 @@
 import { useState } from "react";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet } from "react-native";
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { CameraViewOrganism } from "../components/organisms/CameraViewOrganism";
 import { PhotoCard } from "../components/molecules/PhotoCard";
 import { useGalleryStore } from "../lib/store/galleryStore";
-import { useRouter } from "expo-router";
 
 export default function Camera() {
   const [capturedUri, setCapturedUri] = useState<string | null>(null);
   const { addPhoto } = useGalleryStore();
-  const router = useRouter();
 
   const handlePhotoTaken = (uri: string) => {
     setCapturedUri(uri);

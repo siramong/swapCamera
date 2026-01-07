@@ -1,18 +1,17 @@
-import { Pressable, StyleSheet, PressableProps } from 'react-native';
+import { Pressable, StyleSheet, PressableProps, StyleProp, ViewStyle } from 'react-native';
 import AntDesign from '@expo/vector-icons/AntDesign';
 
-interface IconButtonProps extends Omit<PressableProps, 'children'> {
+interface IconButtonProps extends Omit<PressableProps, 'children' | 'style'> {
   iconName: keyof typeof AntDesign.glyphMap;
   size?: number;
   color?: string;
+  style?: StyleProp<ViewStyle>;
 }
 
 export function IconButton({ iconName, size = 32, color = 'white', style, ...props }: IconButtonProps) {
   return (
-    <Pressable style={[styles.button, style]} {...props}>
-      {({ pressed }) => (
-        <AntDesign name={iconName} size={size} color={color} style={{ opacity: pressed ? 0.5 : 1 }} />
-      )}
+    <Pressable style={({ pressed }) => [styles.button, style, pressed && { opacity: 0.5 }]} {...props}>
+      <AntDesign name={iconName} size={size} color={color} />
     </Pressable>
   );
 }

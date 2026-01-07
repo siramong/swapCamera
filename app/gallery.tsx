@@ -12,7 +12,7 @@ export default function Gallery() {
     <View style={styles.container}>
       <View style={styles.header}>
         <Pressable onPress={() => router.back()} style={styles.backButton}>
-          <AntDesign name="arrowleft" size={24} color="#f8f8f2" />
+          <AntDesign name="left" size={24} color="#f8f8f2" />
         </Pressable>
         <Text style={styles.title}>Gallery ({photos.length})</Text>
       </View>

@@ -1,24 +1,21 @@
-import { Pressable, View, StyleSheet, PressableProps } from 'react-native';
+import { Pressable, View, StyleSheet, PressableProps, StyleProp, ViewStyle } from 'react-native';
 
-interface ShutterButtonProps extends Omit<PressableProps, 'children'> {
+interface ShutterButtonProps extends Omit<PressableProps, 'children' | 'style'> {
   mode?: 'picture' | 'video';
+  style?: StyleProp<ViewStyle>;
 }
 
 export function ShutterButton({ mode = 'picture', style, ...props }: ShutterButtonProps) {
   return (
-    <Pressable style={[styles.shutterBtn, style]} {...props}>
-      {({ pressed }) => (
-        <View style={[styles.shutterBtn, { opacity: pressed ? 0.5 : 1 }]}>
-          <View
-            style={[
-              styles.shutterBtnInner,
-              {
-                backgroundColor: mode === 'picture' ? 'white' : 'red',
-              },
-            ]}
-          />
-        </View>
-      )}
+    <Pressable style={({ pressed }) => [styles.shutterBtn, style, { opacity: pressed ? 0.5 : 1 }]} {...props}>
+      <View
+        style={[
+          styles.shutterBtnInner,
+          {
+            backgroundColor: mode === 'picture' ? 'white' : 'red',
+          },
+        ]}
+      />
     </Pressable>
   );
 }
