@@ -13,10 +13,8 @@ export function CameraViewOrganism({ onPhotoTaken }: CameraViewOrganismProps) {
     permission,
     requestPermission,
     facing,
-    mode,
     takePicture,
     toggleFacing,
-    toggleMode,
   } = useCameraLogic();
 
   if (!permission) {
@@ -35,11 +33,9 @@ export function CameraViewOrganism({ onPhotoTaken }: CameraViewOrganismProps) {
   }
 
   const handleCapture = async () => {
-    if (mode === 'picture') {
-      const uri = await takePicture();
-      if (uri) {
-        onPhotoTaken(uri);
-      }
+    const uri = await takePicture();
+    if (uri) {
+      onPhotoTaken(uri);
     }
   };
 
@@ -48,14 +44,12 @@ export function CameraViewOrganism({ onPhotoTaken }: CameraViewOrganismProps) {
       <CameraView
         style={styles.camera}
         ref={cameraRef}
-        mode={mode}
+        mode="picture"
         facing={facing}
         mute={false}
         responsiveOrientationWhenOrientationLocked
       />
       <CameraControls
-        mode={mode}
-        onToggleMode={toggleMode}
         onCapture={handleCapture}
         onToggleFacing={toggleFacing}
       />

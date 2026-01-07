@@ -42,8 +42,7 @@
       [
         "expo-camera",
         {
-          "cameraPermission": "Permite acceso a tu cámara.",
-          "microphonePermission": "Permite acceso a tu microfóno."
+          "cameraPermission": "Permite acceso a tu cámara."
         }
       ]
     ],
