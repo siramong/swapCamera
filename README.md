@@ -5,11 +5,19 @@ Una aplicación móvil interactiva desarrollada con React Native y Expo que perm
 ## 🎬 Demostración
 
 <!-- Espacio reservado para el GIF demostrativo -->
-<!-- Reemplaza esta línea con tu GIF mostrando el flujo completo de la aplicación -->
+<!-- Para agregar el GIF: 
+     1. Graba un video mostrando el flujo completo de la aplicación
+     2. Convierte el video a GIF
+     3. Guarda el GIF como './assets/demo.gif'
+     4. El GIF se mostrará automáticamente aquí
+-->
 
+> **Nota:** Agrega aquí un GIF demostrativo mostrando el funcionamiento completo de la aplicación:
+> Captura de foto → Swipe para guardar/descartar → Visualización en galería
+
+<!-- Descomenta la siguiente línea cuando el GIF esté disponible:
 ![Demo de SwapCamera](./assets/demo.gif)
-
-*Demostración del flujo completo: Captura de foto → Swipe → Galería*
+-->
 
 ---
 
